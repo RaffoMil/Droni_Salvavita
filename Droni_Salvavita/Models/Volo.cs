@@ -8,7 +8,7 @@
 
         public DateTime ArrivalDate { get; set; }
 
-        public Drone Drone { get; set; }
+        public Drone? Drone { get; set; }
 
     }
 }
