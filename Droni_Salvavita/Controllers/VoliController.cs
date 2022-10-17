@@ -1,29 +1,28 @@
 ﻿using Droni_Salvavita.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Text.Json;
+using System.Xml;
 
 namespace Droni_Salvavita.Controllers
 {
+    [Route("[controller]")]
     public class VoliController : ControllerBase
     {
-        private static string FolderPath = AppDomain.CurrentDomain.BaseDirectory
-                               + "..\\FileDB";
+        private static string _folderPath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "..\\..\\..\\FileDB\\FileVoli.txt";
 
-
-
-
-        [HttpGet()]
-
+        [HttpGet]
         public IActionResult GetVoli()
         {
 
-            using (StreamReader sr = new StreamReader(FolderPath))
+            using (StreamReader sr = new StreamReader(_folderPath))
             {
-              var lettura=  sr.ReadToEnd();
-                List<Volo> listaVoli= JsonSerializer.Deserialize<List<Volo>>(lettura);
+                var lettura = sr.ReadToEnd();
+                List<Volo> listaVoli = JsonSerializer.Deserialize<List<Volo>>(lettura);
                 List<SimpleVolo> listaSimple = new List<SimpleVolo>();
 
-                foreach( var item in listaVoli)
+                foreach (var item in listaVoli)
                 {
                     SimpleVolo volo = new SimpleVolo();
                     volo.ArrivalDate = item.ArrivalDate;
@@ -33,12 +32,12 @@ namespace Droni_Salvavita.Controllers
                     listaSimple.Add(volo);
                 }
 
-             
+
 
                 while (!sr.EndOfStream)
                 {
                     string myJson = " ";
-                    for (int i = 0; i < listaSimple.Count; i++)//da controllare la dimensione
+                    for (int i = 0; i < listaSimple.Count; i++)
                     {
                         myJson += sr.ReadLine();
 
@@ -49,7 +48,7 @@ namespace Droni_Salvavita.Controllers
                     {
                         return Ok(listaSimple);
                     }
-                   
+
 
 
                 }
@@ -60,31 +59,31 @@ namespace Droni_Salvavita.Controllers
         }
 
 
-      
 
-        [HttpGet(" Voli/{FlightId}")]
+
+        [HttpGet("{FlightId}")]
         public IActionResult GetVoliByid(int flightId)
         {
 
-            using (StreamReader sr = new StreamReader(FolderPath))
+            using (StreamReader sr = new StreamReader(_folderPath))
             {
                 var lettura = sr.ReadToEnd();
                 List<Volo> listaVoli = JsonSerializer.Deserialize<List<Volo>>(lettura);
 
-                foreach(var item in listaVoli)
-                { 
+                foreach (var item in listaVoli)
+                {
                     Volo volo = new Volo();
-                    volo.FlightId=item.FlightId;
-                    volo.DepartureDate=item.DepartureDate;
-                    volo.ArrivalDate=item.ArrivalDate;
-                    volo.Drone= item.Drone;
+                    volo.FlightId = item.FlightId;
+                    volo.DepartureDate = item.DepartureDate;
+                    volo.ArrivalDate = item.ArrivalDate;
+                    volo.Drone = item.Drone;
                     listaVoli.Add(volo);
                     if (volo.FlightId == flightId)
                     {
                         return Ok(volo);
                     }
                 }
-                
+
                 while (!sr.EndOfStream)
                 {
                     string myJson1 = " ";
@@ -93,7 +92,7 @@ namespace Droni_Salvavita.Controllers
                     {
                         myJson1 += sr.ReadLine();
                     }
-                    
+
                 }
                 return BadRequest("flight is not disponible");
             }
@@ -101,14 +100,11 @@ namespace Droni_Salvavita.Controllers
         }
 
     }
-
-
-
-
 }
 
 
 
 
-    
+
+
 
