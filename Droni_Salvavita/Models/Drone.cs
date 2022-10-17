@@ -5,7 +5,7 @@
         public enum TipoPropulsore {
             PLASMA = 1,
             NUCLEARE = 2,
-            ELETTIRICO = 3,
+            ELETTRICO = 3,
         }
 
         public enum TipoGuida {
