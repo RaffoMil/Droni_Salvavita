@@ -1,5 +1,0 @@
-{
-  "FlightId": 1,
-  "DepartureDate": "2022-10-17T15:38:27.284Z",
-  "ArrivalDate": "2023-10-17T15:38:27.284Z"
-}
