@@ -2,11 +2,11 @@
 {
     public class Volo
     {
-        public int Id { get; set; }
+        public int FlightId { get; set; }
 
-        public DateTime DataPartenza { get; set; }
+        public DateTime DepartureDate { get; set; }
 
-        public DateTime DateFine { get; set; }
+        public DateTime ArrivalDate { get; set; }
 
         public Drone Drone { get; set; }
 
