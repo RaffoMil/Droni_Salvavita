@@ -72,31 +72,28 @@ namespace Droni_Salvavita.Controllers
                 List<Volo> listaVoli = JsonSerializer.Deserialize<List<Volo>>(lettura);
 
                 foreach(var item in listaVoli)
-                {
+                { 
                     Volo volo = new Volo();
                     volo.FlightId=item.FlightId;
                     volo.DepartureDate=item.DepartureDate;
                     volo.ArrivalDate=item.ArrivalDate;
                     volo.Drone= item.Drone;
                     listaVoli.Add(volo);
+                    if (volo.FlightId == flightId)
+                    {
+                        return Ok(volo);
+                    }
                 }
                 
                 while (!sr.EndOfStream)
                 {
                     string myJson1 = " ";
 
-                    for (int i = 0; i < 18; i++)
+                    for (int i = 0; i < listaVoli.Count; i++)
                     {
                         myJson1 += sr.ReadLine();
                     }
-                     Volo volo = JsonSerializer.Deserialize<Volo>(myJson1);
-
-                    if (volo.FlightId==flightId)
-                    {
-                        return Ok(volo);
-                    }
-                   
-                        
+                    
                 }
                 return BadRequest("flight is not disponible");
             }
