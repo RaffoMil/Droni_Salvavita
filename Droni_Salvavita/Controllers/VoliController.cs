@@ -19,19 +19,35 @@ namespace Droni_Salvavita.Controllers
 
             using (StreamReader sr = new StreamReader(FolderPath))
             {
+              var lettura=  sr.ReadToEnd();
+                List<Volo> listaVoli= JsonSerializer.Deserialize<List<Volo>>(lettura);
+                List<SimpleVolo> listaSimple = new List<SimpleVolo>();
+
+                foreach( var item in listaVoli)
+                {
+                    SimpleVolo volo = new SimpleVolo();
+                    volo.ArrivalDate = item.ArrivalDate;
+                    volo.DepartureDate = item.DepartureDate;
+                    volo.FlightId = item.FlightId;
+
+                    listaSimple.Add(volo);
+                }
+
+             
+
                 while (!sr.EndOfStream)
                 {
                     string myJson = " ";
-                    for (int i = 0; i < 18; i++)//da controllare la dimensione
+                    for (int i = 0; i < listaSimple.Count; i++)//da controllare la dimensione
                     {
                         myJson += sr.ReadLine();
 
                     }
-                    SimpleVolo voli = JsonSerializer.Deserialize<SympleVolo>(myJson);
+                    SimpleVolo voli = JsonSerializer.Deserialize<SimpleVolo>(myJson);
 
                     if (voli != null)
                     {
-                        return Ok(voli);
+                        return Ok(listaSimple);
                     }
                    
 
@@ -44,27 +60,7 @@ namespace Droni_Salvavita.Controllers
         }
 
 
-        //        //Permettere di vedere il dettaglio di un volo 
-
-        //        Voli/{IdVolo
-        //    }
-
-        //    GET
-
-        //    Body
-        //    {
-
-        //        FlightId, 
-        //			DepartureDate, 
-        //		              ArrivalDate
-        //            Drone
-        //        {
-
-        //            DroneId, 
-        //    	FlightTime, 
-        //	     PropulsionType(enum: Reaction, FixedWing, Helix), 
-        //               PilotType(enum: Pilot, AI) 
-        //} 
+      
 
         [HttpGet(" Voli/{FlightId}")]
         public IActionResult GetVoliByid(int flightId)
@@ -72,6 +68,19 @@ namespace Droni_Salvavita.Controllers
 
             using (StreamReader sr = new StreamReader(FolderPath))
             {
+                var lettura = sr.ReadToEnd();
+                List<Volo> listaVoli = JsonSerializer.Deserialize<List<Volo>>(lettura);
+
+                foreach(var item in listaVoli)
+                {
+                    Volo volo = new Volo();
+                    volo.FlightId=item.FlightId;
+                    volo.DepartureDate=item.DepartureDate;
+                    volo.ArrivalDate=item.ArrivalDate;
+                    volo.Drone= item.Drone;
+                    listaVoli.Add(volo);
+                }
+                
                 while (!sr.EndOfStream)
                 {
                     string myJson1 = " ";
