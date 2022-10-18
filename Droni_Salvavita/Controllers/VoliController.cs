@@ -24,14 +24,11 @@ namespace Droni_Salvavita.Controllers
             } 
         }
 
-        private static string _folderPath = AppDomain.CurrentDomain.BaseDirectory
-                                   + "..\\..\\..\\FileDB\\FileVoli.txt";
-
         [HttpGet]
         public IActionResult GetVoli()
         {
 
-            using (StreamReader sr = new StreamReader(_folderPath))
+            using (StreamReader sr = new StreamReader(_folderPathVoli))
             {
                 var lettura = sr.ReadToEnd();
                 List<Volo> listaVoli = JsonSerializer.Deserialize<List<Volo>>(lettura);
@@ -80,7 +77,7 @@ namespace Droni_Salvavita.Controllers
         public IActionResult GetVoliByid(int flightId)
         {
 
-            using (StreamReader sr = new StreamReader(_folderPath))
+            using (StreamReader sr = new StreamReader(_folderPathVoli))
             {
                 var lettura = sr.ReadToEnd();
                 List<Volo> listaVoli = JsonSerializer.Deserialize<List<Volo>>(lettura);
