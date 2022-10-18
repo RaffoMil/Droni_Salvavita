@@ -1,11 +1,7 @@
 ﻿using Droni_Salvavita.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Diagnostics.Metrics;
 using System.Text.Json;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Xml;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Droni_Salvavita.Controllers
 {
@@ -19,7 +15,9 @@ namespace Droni_Salvavita.Controllers
         [HttpPost("/voli")]
         public IActionResult PostVoli([FromBody] SimpleVolo volo ) {
             if (volo is not null) {
-                System.IO.File.WriteAllText( _folderPathVoli, JsonConvert.SerializeObject(volo, Formatting.Indented));
+                //System.IO.File.WriteAllText( _folderPathVoli, JsonConvert.SerializeObject(volo, Formatting.Indented));
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                System.IO.File.WriteAllText( _folderPathVoli, JsonSerializer.Serialize<SimpleVolo>(volo, options));
                 return Ok();
             } else {
                 return BadRequest();
